@@ -1,8 +1,8 @@
 library(shiny)
+library(DT)
 
 ui <- fluidPage(
-  sliderInput("num_rows",label = "number of rows", min = 1, max = 10, value = 5),
-  tableOutput('table1')
+  dataTableOutput('table1')
 )
 
 server <- function(input, output, session) {
@@ -19,7 +19,13 @@ server <- function(input, output, session) {
   
   rdsData <- reactiveFileReader(1000, session, 'data.rds', readRDS)
 
-  output$table1 <- renderTable({head(rdsData(), n = input$num_rows)})
+  output$table1 <- renderDataTable({
+    rdsData()
+    }, options = list(orderClasses = TRUE, 
+                      lengthMenu = c(10, 30, 50), 
+                      pageLength = 15
+                      )
+    )
 }
 
 shinyApp(ui = ui, server = server)
