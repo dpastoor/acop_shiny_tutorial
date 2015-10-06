@@ -6,7 +6,19 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  output$table1 <- renderTable(head(Theoph, n = input$num_rows))
+  
+  #### only for initialization on first run ---
+  rdsData <- NULL
+  if (is.null(rdsData)) {
+    #give some initial data to plot out in case none available
+    rdsData <- Theoph
+    if(!file.exists('data.rds')) {
+      saveRDS(Theoph, 'data.rds')
+    }
+  }
+  
+  
+  output$table1 <- renderTable({head(Theoph, n = input$num_rows)})
 }
 
 shinyApp(ui = ui, server = server)
