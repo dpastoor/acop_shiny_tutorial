@@ -5,7 +5,7 @@ ui <- fluidPage(
   tableOutput('table1')
 )
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   #### only for initialization on first run ---
   rdsData <- NULL
@@ -17,8 +17,9 @@ server <- function(input, output) {
     }
   }
   
-  
-  output$table1 <- renderTable({head(Theoph, n = input$num_rows)})
+  rdsData <- reactiveFileReader(1000, session, 'data.rds', readRDS)
+
+  output$table1 <- renderTable({head(rdsData(), n = input$num_rows)})
 }
 
 shinyApp(ui = ui, server = server)
