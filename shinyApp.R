@@ -38,7 +38,8 @@ server <- function(input, output, session) {
   })
   
   output$table1 <- renderDataTable({
-    rdsData()
+    data <- rdsData()
+    data[, input$show_vars, drop = FALSE]
     }, options = list(orderClasses = TRUE, 
                       lengthMenu = c(10, 30, 50), 
                       pageLength = 15
