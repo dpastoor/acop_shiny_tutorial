@@ -4,9 +4,13 @@ library(DT)
 ui <- fluidPage(
   fluidRow(
     column(3,
-           wellPanel()
+           wellPanel(
+             checkboxGroupInput('show_vars', 
+                                'Columns in data set to show:',
+                                choices = NULL, selected = NULL)
+           )
            ),
-  column(9, 
+    column(9, 
          dataTableOutput('table1')
         )
   )
@@ -25,7 +29,14 @@ server <- function(input, output, session) {
   }
   
   rdsData <- reactiveFileReader(1000, session, 'data.rds', readRDS)
-
+  
+  observe({
+    col_names <- names(rdsData())
+    updateCheckboxGroupInput(session, 'show_vars', 'Columns in data set to show:',
+                             choices =  col_names, 
+                             selected =  col_names)
+  })
+  
   output$table1 <- renderDataTable({
     rdsData()
     }, options = list(orderClasses = TRUE, 
