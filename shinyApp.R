@@ -2,7 +2,14 @@ library(shiny)
 library(DT)
 
 ui <- fluidPage(
-  dataTableOutput('table1')
+  fluidRow(
+    column(3,
+           wellPanel()
+           ),
+  column(9, 
+         dataTableOutput('table1')
+        )
+  )
 )
 
 server <- function(input, output, session) {
