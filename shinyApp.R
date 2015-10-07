@@ -3,14 +3,14 @@ library(DT)
 
 ui <- fluidPage(
   fluidRow(
-    column(3,
+    column(2,
            wellPanel(
              checkboxGroupInput('show_vars', 
                                 'Columns in data set to show:',
                                 choices = NULL, selected = NULL)
-           )
-           ),
-    column(9, 
+            )
+    ),
+    column(10, 
          dataTableOutput('table1')
         )
   )
